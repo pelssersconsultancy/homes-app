@@ -20,3 +20,9 @@ See https://github.com/angular/codelabs/tree/homes-app-start
 5. Place static files in the public folder (e.g. create an assets folder with logo.svg inside public folder)
 
    `<img class="brand-logo" src="assets/logo.svg" alt="logo"/>`
+
+6. Generate a Home component
+
+   `$ ng g c Home --inline-template` (shortcut version)
+
+   `$ ng generate component Home --inline-template`
