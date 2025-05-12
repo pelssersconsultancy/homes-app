@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HomeComponent } from './home/home.component';
 
 @Component({
   selector: 'app-root',
@@ -13,9 +14,11 @@ import { Component } from '@angular/core';
           aria-hidden="true"
         />
       </header>
+      <section class="content"><app-home></app-home></section>
     </main>
   `,
   styleUrl: './app.component.scss',
+  imports: [HomeComponent],
 })
 export class AppComponent {
   title = 'homes-app';
