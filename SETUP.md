@@ -16,3 +16,7 @@ See https://github.com/angular/codelabs/tree/homes-app-start
 4. Inside the homes-app folder run the serve command
 
    `$ ng serve`
+
+5. Place static files in the public folder (e.g. create an assets folder with logo.svg inside public folder)
+
+   `<img class="brand-logo" src="assets/logo.svg" alt="logo"/>`
