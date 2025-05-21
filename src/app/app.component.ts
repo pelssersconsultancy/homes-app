@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HomeComponent } from './home/home.component';
+import { housingLocationList } from './home/housing-location-list';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,9 @@ import { HomeComponent } from './home/home.component';
           aria-hidden="true"
         />
       </header>
-      <section class="content"><app-home></app-home></section>
+      <section class="content">
+        <app-home [housingLocationList]="housingLocationList"></app-home>
+      </section>
     </main>
   `,
   styleUrl: './app.component.scss',
@@ -22,4 +25,5 @@ import { HomeComponent } from './home/home.component';
 })
 export class AppComponent {
   title = 'homes-app';
+  housingLocationList = housingLocationList;
 }

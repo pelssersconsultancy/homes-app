@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
-import { HousingLocationComponent } from '../housing-location/housing-location.component';
+import { Component, input } from '@angular/core';
+
+import { HousingLocation } from '../feature-housing/housing-location';
+import { HousingLocationSummaryComponent } from '../feature-housing/housing-location-summary/housing-location-summary.component';
 
 @Component({
   selector: 'app-home',
-  imports: [HousingLocationComponent],
+  imports: [HousingLocationSummaryComponent],
   template: `
     <section>
       <form>
@@ -12,9 +14,16 @@ import { HousingLocationComponent } from '../housing-location/housing-location.c
       </form>
     </section>
     <section class="results">
-      <app-housing-location></app-housing-location>
+      @for (housingLocation of housingLocationList(); track housingLocation.id)
+      {
+      <app-housing-location-summary
+        [housingLocation]="housingLocation"
+      ></app-housing-location-summary>
+      }
     </section>
   `,
   styleUrl: './home.component.scss',
 })
-export class HomeComponent {}
+export class HomeComponent {
+  readonly housingLocationList = input.required<HousingLocation[]>();
+}

@@ -26,3 +26,7 @@ See https://github.com/angular/codelabs/tree/homes-app-start
    `$ ng g c Home --inline-template` (shortcut version)
 
    `$ ng generate component Home --inline-template`
+
+7. Generate an interface for housing location
+
+   `$ ng g i feature-housing/housingLocation`
