@@ -1,7 +1,8 @@
-import { Component, input } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 
 import { HousingLocation } from '../feature-housing/housing-location';
 import { HousingLocationSummaryComponent } from '../feature-housing/housing-location-summary/housing-location-summary.component';
+import { housingLocationList } from './housing-location-list';
 
 @Component({
   selector: 'app-home',
@@ -14,8 +15,7 @@ import { HousingLocationSummaryComponent } from '../feature-housing/housing-loca
       </form>
     </section>
     <section class="results">
-      @for (housingLocation of housingLocationList(); track housingLocation.id)
-      {
+      @for (housingLocation of housingLocations(); track housingLocation.id) {
       <app-housing-location-summary
         [housingLocation]="housingLocation"
       ></app-housing-location-summary>
@@ -25,5 +25,5 @@ import { HousingLocationSummaryComponent } from '../feature-housing/housing-loca
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  readonly housingLocationList = input.required<HousingLocation[]>();
+  readonly housingLocations = signal(housingLocationList);
 }

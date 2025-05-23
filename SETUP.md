@@ -30,3 +30,5 @@ See https://github.com/angular/codelabs/tree/homes-app-start
 7. Generate an interface for housing location
 
    `$ ng g i feature-housing/housingLocation`
+
+8. Add withComponentInputBinding() to app.config.ts
