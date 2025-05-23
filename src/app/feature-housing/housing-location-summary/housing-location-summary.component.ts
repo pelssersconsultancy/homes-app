@@ -1,9 +1,10 @@
 import { Component, input } from '@angular/core';
 import { HousingLocation } from '../housing-location';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-housing-location-summary',
-  imports: [],
+  imports: [RouterLink],
   template: `
     <section class="listing">
       <img
@@ -15,6 +16,7 @@ import { HousingLocation } from '../housing-location';
       <p class="listing-location">
         {{ housingLocation().city }}, {{ housingLocation().state }}
       </p>
+      <a [routerLink]="['details', housingLocation().id]">Learn More</a>
     </section>
   `,
   styleUrl: './housing-location-summary.component.scss',
