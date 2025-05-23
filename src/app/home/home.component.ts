@@ -1,8 +1,7 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 
-import { HousingLocation } from '../feature-housing/housing-location';
 import { HousingLocationSummaryComponent } from '../feature-housing/housing-location-summary/housing-location-summary.component';
-import { housingLocationList } from './housing-location-list';
+import { HousingService } from '../feature-housing/housing.service';
 
 @Component({
   selector: 'app-home',
@@ -25,5 +24,6 @@ import { housingLocationList } from './housing-location-list';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  readonly housingLocations = signal(housingLocationList);
+  private readonly housingService = inject(HousingService);
+  readonly housingLocations = this.housingService.getAllHousingLocations();
 }
