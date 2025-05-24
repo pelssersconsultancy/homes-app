@@ -25,4 +25,10 @@ export class HousingService {
       return house;
     });
   }
+
+  submitApplication(firstName: string, lastName: string, email: string): void {
+    console.log(
+      `Application submitted for ${firstName} ${lastName} with email ${email}`
+    );
+  }
 }
