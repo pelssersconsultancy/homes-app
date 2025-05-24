@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { HousingService } from '../housing.service';
 import { HousingLocation } from '../housing-location';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { first } from 'rxjs';
 
 @Component({
@@ -98,8 +98,10 @@ import { first } from 'rxjs';
 })
 export class HousingLocationDetailsComponent {
   private readonly housingService = inject(HousingService);
-  protected readonly applicationForm = viewChild.required('applicationForm');
-  protected readonly questionForm = viewChild.required('questionForm');
+  protected readonly applicationForm =
+    viewChild.required<NgForm>('applicationForm');
+  protected readonly questionForm = viewChild.required<NgForm>('questionForm');
+  id = input.required<string>();
 
   protected readonly applicationFormValue = signal<Application>({
     firstName: '',
@@ -111,7 +113,6 @@ export class HousingLocationDetailsComponent {
     question: '',
   });
 
-  id = input.required<string>();
   housingLocation: Signal<HousingLocation | undefined>;
 
   constructor() {
