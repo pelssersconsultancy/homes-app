@@ -10,7 +10,6 @@ import {
 import { HousingService } from '../housing.service';
 import { HousingLocation } from '../housing-location';
 import { FormsModule, NgForm } from '@angular/forms';
-import { first } from 'rxjs';
 
 @Component({
   selector: 'app-housing-location-details',

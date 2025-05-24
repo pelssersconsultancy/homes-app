@@ -1,4 +1,4 @@
-import { Directive, inject, Output, output, signal } from '@angular/core';
+import { Directive, inject, output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { mergeValuesAndRawValues } from './utils';
