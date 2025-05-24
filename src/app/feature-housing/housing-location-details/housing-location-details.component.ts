@@ -3,13 +3,13 @@ import {
   computed,
   inject,
   input,
+  signal,
   Signal,
   viewChild,
-  ViewChild,
 } from '@angular/core';
 import { HousingService } from '../housing.service';
 import { HousingLocation } from '../housing-location';
-import { FormControl, FormGroup, FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { first } from 'rxjs';
 
 @Component({
@@ -39,13 +39,14 @@ import { first } from 'rxjs';
       </section>
       <section class="listing-apply">
         <h2 class="section-heading">Apply for this housing location</h2>
+        @let application = applicationFormValue();
         <form #applicationForm="ngForm" (submit)="submitApplication()">
           <label for="first-name">First Name</label>
           <input
             id="first-name"
             name="firstName"
             type="text"
-            [(ngModel)]="applicationFormValue.firstName"
+            [(ngModel)]="application.firstName"
             required
           />
           <label for="last-name">Last Name</label>
@@ -53,7 +54,7 @@ import { first } from 'rxjs';
             id="last-name"
             name="lastName"
             type="text"
-            [(ngModel)]="applicationFormValue.lastName"
+            [(ngModel)]="application.lastName"
             required
           />
           <label for="email">Email</label>
@@ -61,7 +62,7 @@ import { first } from 'rxjs';
             id="email"
             name="email"
             type="email"
-            [(ngModel)]="applicationFormValue.email"
+            [(ngModel)]="application.email"
             required
           />
           <button type="submit" [disabled]="!applicationForm.valid">
@@ -71,6 +72,7 @@ import { first } from 'rxjs';
       </section>
       <section class="listing-ask-question">
         <h2 class="section-heading">Apply a question</h2>
+        @let questionnaire = questionFormValue();
         <form #questionForm="ngForm" (submit)="submitQuestion()">
           <label for="question">Question</label>
 
@@ -78,7 +80,7 @@ import { first } from 'rxjs';
             matInput
             id="question"
             name="question"
-            [(ngModel)]="questionFormValue.question"
+            [(ngModel)]="questionnaire.question"
             required="true"
           ></textarea>
           <button type="submit" [disabled]="!questionForm.valid">
@@ -95,20 +97,20 @@ import { first } from 'rxjs';
   styleUrl: './housing-location-details.component.scss',
 })
 export class HousingLocationDetailsComponent {
+  private readonly housingService = inject(HousingService);
   protected readonly applicationForm = viewChild.required('applicationForm');
   protected readonly questionForm = viewChild.required('questionForm');
 
-  protected readonly applicationFormValue = {
+  protected readonly applicationFormValue = signal<Application>({
     firstName: '',
     lastName: '',
     email: '',
-  };
+  });
 
-  protected readonly questionFormValue = {
+  protected readonly questionFormValue = signal<Questionnaire>({
     question: '',
-  };
+  });
 
-  private readonly housingService = inject(HousingService);
   id = input.required<string>();
   housingLocation: Signal<HousingLocation | undefined>;
 
@@ -124,11 +126,21 @@ export class HousingLocationDetailsComponent {
 
   submitApplication() {
     console.log('applicationForm', this.applicationForm());
-    console.log('submitApplication', this.applicationFormValue);
+    console.log('submitApplication', this.applicationFormValue());
   }
 
   submitQuestion() {
     console.log('questionFrm', this.questionForm());
-    console.log('submitQuestion', this.questionFormValue);
+    console.log('submitQuestion', this.questionFormValue());
   }
 }
+
+export type Application = {
+  firstName: string;
+  lastName: string;
+  email: string;
+};
+
+export type Questionnaire = {
+  question: string;
+};
