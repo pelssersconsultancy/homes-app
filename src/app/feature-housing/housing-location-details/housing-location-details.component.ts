@@ -1,11 +1,20 @@
-import { Component, computed, inject, input, Signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  Signal,
+  viewChild,
+  ViewChild,
+} from '@angular/core';
 import { HousingService } from '../housing.service';
 import { HousingLocation } from '../housing-location';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, NgForm } from '@angular/forms';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-housing-location-details',
-  imports: [ReactiveFormsModule],
+  imports: [FormsModule],
   template: `
     @if (housingLocation(); as housingLocation) {
     <article>
@@ -30,25 +39,50 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
       </section>
       <section class="listing-apply">
         <h2 class="section-heading">Apply for this housing location</h2>
-        <form [formGroup]="applyForm" (submit)="submitApplication()">
+        <form #applicationForm="ngForm" (submit)="submitApplication()">
           <label for="first-name">First Name</label>
           <input
             id="first-name"
+            name="firstName"
             type="text"
-            formControlName="firstName"
+            [(ngModel)]="applicationFormValue.firstName"
             required
           />
           <label for="last-name">Last Name</label>
           <input
             id="last-name"
+            name="lastName"
             type="text"
-            formControlName="lastName"
+            [(ngModel)]="applicationFormValue.lastName"
             required
           />
           <label for="email">Email</label>
-          <input id="email" type="email" formControlName="email" required />
-          <button type="submit" [disabled]="applyForm.invalid">
+          <input
+            id="email"
+            name="email"
+            type="email"
+            [(ngModel)]="applicationFormValue.email"
+            required
+          />
+          <button type="submit" [disabled]="!applicationForm.valid">
             Submit Application
+          </button>
+        </form>
+      </section>
+      <section class="listing-ask-question">
+        <h2 class="section-heading">Apply a question</h2>
+        <form #questionForm="ngForm" (submit)="submitQuestion()">
+          <label for="question">Question</label>
+
+          <textarea
+            matInput
+            id="question"
+            name="question"
+            [(ngModel)]="questionFormValue.question"
+            required="true"
+          ></textarea>
+          <button type="submit" [disabled]="!questionForm.valid">
+            Submit Question
           </button>
         </form>
       </section>
@@ -61,15 +95,22 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './housing-location-details.component.scss',
 })
 export class HousingLocationDetailsComponent {
+  protected readonly applicationForm = viewChild.required('applicationForm');
+  protected readonly questionForm = viewChild.required('questionForm');
+
+  protected readonly applicationFormValue = {
+    firstName: '',
+    lastName: '',
+    email: '',
+  };
+
+  protected readonly questionFormValue = {
+    question: '',
+  };
+
   private readonly housingService = inject(HousingService);
   id = input.required<string>();
   housingLocation: Signal<HousingLocation | undefined>;
-
-  applyForm = new FormGroup({
-    firstName: new FormControl('', { nonNullable: true }),
-    lastName: new FormControl('', { nonNullable: true }),
-    email: new FormControl('', { nonNullable: true }),
-  });
 
   constructor() {
     this.housingLocation = computed(() => {
@@ -82,12 +123,12 @@ export class HousingLocationDetailsComponent {
   }
 
   submitApplication() {
-    // https://angular.dev/guide/forms/typed-forms
-    // value is non nullable but can still be undefined because any control can be disabled
-    this.housingService.submitApplication(
-      this.applyForm.value.firstName ?? '',
-      this.applyForm.value.lastName ?? '',
-      this.applyForm.value.email ?? ''
-    );
+    console.log('applicationForm', this.applicationForm());
+    console.log('submitApplication', this.applicationFormValue);
+  }
+
+  submitQuestion() {
+    console.log('questionFrm', this.questionForm());
+    console.log('submitQuestion', this.questionFormValue);
   }
 }
