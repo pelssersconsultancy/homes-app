@@ -1,6 +1,6 @@
 # Angular quick start
 
-See https://github.com/angular/codelabs/tree/homes-app-start
+See <https://github.com/angular/codelabs/tree/homes-app-start>
 
 1. Install latest node version
 2. Install angular CLI
@@ -32,3 +32,9 @@ See https://github.com/angular/codelabs/tree/homes-app-start
    `$ ng g i feature-housing/housingLocation`
 
 8. Add withComponentInputBinding() to app.config.ts
+
+9. Enable eslint
+   `$ npm init @eslint/config@latest`
+
+10. Enable stylistic eslint: see <https://eslint.style/packages/ts>
+    `$ npm i -D  @stylistic/eslint-plugin-ts`
