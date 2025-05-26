@@ -13,7 +13,7 @@ export class FormDirective<T> {
   public readonly formDirtyChange = output<boolean>();
 
   constructor() {
-    this.ngForm.form.valueChanges.pipe(debounceTime(0)).subscribe(() => {
+    this.ngForm.form.valueChanges.pipe(debounceTime(500)).subscribe(() => {
       this.formValueChange.emit(mergeValuesAndRawValues<T>(this.ngForm.form));
       this.formDirtyChange.emit(this.ngForm.form.dirty);
     });

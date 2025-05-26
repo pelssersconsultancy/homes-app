@@ -10,10 +10,11 @@ import {
 import { HousingService } from '../housing.service';
 import { HousingLocation } from '../housing-location';
 import { FormsModule, NgForm } from '@angular/forms';
+import { FormDirective } from '../../shared/form.directive';
 
 @Component({
   selector: 'app-housing-location-details',
-  imports: [FormsModule],
+  imports: [FormsModule, FormDirective],
   template: `
     @if (housingLocation(); as housingLocation) {
     <article>
@@ -39,13 +40,17 @@ import { FormsModule, NgForm } from '@angular/forms';
       <section class="listing-apply">
         <h2 class="section-heading">Apply for this housing location</h2>
         @let application = applicationFormValue();
-        <form #applicationForm="ngForm" (submit)="submitApplication()">
+        <form
+          #applicationForm="ngForm"
+          (submit)="submitApplication()"
+          (formValueChange)="onApplicationFormValueChange($event)"
+        >
           <label for="first-name">First Name</label>
           <input
             id="first-name"
             name="firstName"
             type="text"
-            [(ngModel)]="application.firstName"
+            [ngModel]="application.firstName"
             required
           />
           <label for="last-name">Last Name</label>
@@ -53,7 +58,7 @@ import { FormsModule, NgForm } from '@angular/forms';
             id="last-name"
             name="lastName"
             type="text"
-            [(ngModel)]="application.lastName"
+            [ngModel]="application.lastName"
             required
           />
           <label for="email">Email</label>
@@ -61,7 +66,7 @@ import { FormsModule, NgForm } from '@angular/forms';
             id="email"
             name="email"
             type="email"
-            [(ngModel)]="application.email"
+            [ngModel]="application.email"
             required
           />
           <button type="submit" [disabled]="!applicationForm.valid">
@@ -72,14 +77,18 @@ import { FormsModule, NgForm } from '@angular/forms';
       <section class="listing-ask-question">
         <h2 class="section-heading">Apply a question</h2>
         @let questionnaire = questionFormValue();
-        <form #questionForm="ngForm" (submit)="submitQuestion()">
+        <form
+          #questionForm="ngForm"
+          (submit)="submitQuestion()"
+          (formValueChange)="onQuestionFormValueChange($event)"
+        >
           <label for="question">Question</label>
 
           <textarea
             matInput
             id="question"
             name="question"
-            [(ngModel)]="questionnaire.question"
+            [ngModel]="questionnaire.question"
             required="true"
           ></textarea>
           <button type="submit" [disabled]="!questionForm.valid">
@@ -102,13 +111,13 @@ export class HousingLocationDetailsComponent {
   protected readonly questionForm = viewChild.required<NgForm>('questionForm');
   id = input.required<string>();
 
-  protected readonly applicationFormValue = signal<Application>({
+  protected readonly applicationFormValue = signal<ApplicationModel>({
     firstName: '',
     lastName: '',
     email: '',
   });
 
-  protected readonly questionFormValue = signal<Questionnaire>({
+  protected readonly questionFormValue = signal<QuestionnaireModel>({
     question: '',
   });
 
@@ -133,14 +142,22 @@ export class HousingLocationDetailsComponent {
     console.log('questionFrm', this.questionForm());
     console.log('submitQuestion', this.questionFormValue());
   }
+
+  onApplicationFormValueChange(value: ApplicationModel) {
+    this.applicationFormValue.set(value);
+  }
+
+  onQuestionFormValueChange(value: QuestionnaireModel) {
+    this.questionFormValue.set(value);
+  }
 }
 
-export type Application = {
+export type ApplicationModel = {
   firstName: string;
   lastName: string;
   email: string;
 };
 
-export type Questionnaire = {
+export type QuestionnaireModel = {
   question: string;
 };
